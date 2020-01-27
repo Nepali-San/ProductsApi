@@ -6,7 +6,6 @@ const productSchema = mongoose.Schema({
         type: String,
         trim: true,
         required: [true, "products must hava a title/name"],
-        unique: true,
         maxlength: [35, 'product title must be less than or equal to 35 characters'],
         minlength: [4, 'product title must be more than or equal to 4 characters'],
     },
@@ -53,8 +52,8 @@ const productSchema = mongoose.Schema({
         trim: true,
     },
     created_by: {
-        type: mongoose.Schema.ObjectId,  
-        ref:'User'      
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
     },
     created_at: {
         type: Date,
@@ -84,12 +83,15 @@ const productSchema = mongoose.Schema({
         coordinate: [Number],
         address: String,
         description: String,
-        day:Number,
+        day: Number,
     }]
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 })
+
+productSchema.index({ price: 1, ratingAverage: -1 })
+productSchema.index({ slug: 1 })
 
 //virtual property are not saved in db, they are derived from other data in db
 productSchema.virtual('discountedPrice').get(function () {
@@ -97,10 +99,10 @@ productSchema.virtual('discountedPrice').get(function () {
     return this.price - newPrice
 })
 
-productSchema.virtual('review',{
-    ref:'Review',
-    foreignField:'product',
-    localField:'_id'
+productSchema.virtual('review', {
+    ref: 'Review',
+    foreignField: 'product',
+    localField: '_id'
 })
 
 //Mongoose Document Middleware
@@ -109,7 +111,7 @@ productSchema.pre('save', function (next) {
     //`this` is the current document before saving into db
     //add `slug` to our document
     // this.created_by = 'id'
-    this.slug = slugify(this.title, { lower: true })
+    this.slug = slugify(this.title + this._id, { lower: true })
     next()
 })
 
@@ -118,7 +120,7 @@ productSchema.pre('save', function (next) {
 // productSchema.pre('find', function (next) {
 productSchema.pre(/^find/, function (next) {
     //this.find({ above18: { $ne: true } })
-    this.populate({ path: 'created_by', select:'-__v -passwordChangedAt -role'})
+    this.populate({ path: 'created_by', select: '-__v -passwordChangedAt -role' })
     next()
 })
 

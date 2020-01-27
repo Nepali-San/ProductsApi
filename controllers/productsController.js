@@ -26,6 +26,7 @@ exports.getProducts = catchAsync(async (req, res, next) => {
     if (req.user.age < 18)
         features.query = features.query.find({ above18: { $ne: true } })
 
+    // const products = await features.query.explain()
     const products = await features.query
 
     res.status(200).json({
