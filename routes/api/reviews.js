@@ -11,11 +11,13 @@ router.route('/')
     .get(
         reviewController.getProductReviews)
     .post(
-        reviewController.setProductUserId,
+        authController.restrictTo('user'),  //only users can create review
+        reviewController.setProductUserId,  //set the product and user id on review data
         reviewController.createReview)
 
 router.route('/:id')
-    .delete(        
+    .delete(
+        authController.authorize,           //be either admin or owner of the review
         reviewController.deleteReview)
     .patch(
         authController.restrictTo('user'),  //only users are allowed,no admins
