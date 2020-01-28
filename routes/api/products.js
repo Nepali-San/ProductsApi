@@ -22,13 +22,15 @@ router.route('/')
     .get(
         productsController.getProducts)
     .post(
+        authController.restrictTo('user'),
         productsController.createProduct)
 
 router.route('/:id')
     .get(
         productsController.getSingleProduct)
     .patch(
-        authController.authorize, //admin and owner is authorized
+        authController.restrictTo('user'),
+        authController.authorize, //owner is authorized
         productsController.updateProduct)
     .delete(
         authController.authorize,
