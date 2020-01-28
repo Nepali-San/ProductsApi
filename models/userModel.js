@@ -52,7 +52,16 @@ const userSchema = new mongoose.Schema({
     updated_at: {
         type: Date,
         select: false,
-    }
+    },
+    location: {
+        type: {
+            type: String,
+            default: 'Point',
+            enum: ['Point']
+        },
+        coordinate: [Number],
+        address: String,
+    },
 }, {
     toJSON: { virtuals: false },
     toObject: { virtuals: true }
