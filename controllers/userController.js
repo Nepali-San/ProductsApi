@@ -1,6 +1,7 @@
 const User = require('./../models/userModel')
 const ApiError = require('../utils/apiError')
 const factory = require('./handlerFactory')
+const catchAsync = require('../utils/catchAsync')
 
 exports.getusers = catchAsync(async (req, res, next) => {
     const users = await User.find()
@@ -20,7 +21,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     }
 
     //filter not allowed fields from body
-    const allowedFields = ['name', 'email']
+    const allowedFields = ['name', 'email', 'location']
     const filteredObj = {}
     Object.keys(req.body).forEach(el => {
         if (allowedFields.includes(el)) filteredObj[el] = req.body[el]
@@ -49,8 +50,8 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 })
 
 exports.getMe = catchAsync(async (req, res, next) => {
-   req.params.id = req.user._id
-   next()    
+    req.params.id = req.user._id
+    next()
 })
 
 exports.getUser = catchAsync(async (req, res, next) => {
@@ -67,3 +68,41 @@ exports.getUser = catchAsync(async (req, res, next) => {
 exports.deleteUser = factory.deleteOne(User)
 
 exports.updateUser = factory.updateOne(User)
+
+//user-within/233/center/27.699221,83.467209/unit/km
+//user-within/:distance/center/:latlng/unit/:unit
+exports.getUsersWithin = catchAsync(async (req, res, next) => {
+    const { distance, latlng, unit } = req.params
+    const [lat, lng] = latlng.split(',')
+
+    if (!lat || !lng) {
+        throw new ApiError("Please specify latitude and longitue in the format lat,lng.", 400)
+    }
+
+    const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1
+
+    // console.log(distance, lat, lng, unit)
+
+    // console.log(distance, lat, lng, unit)
+    const usersLoc = await User.find({
+        'location.coordinate' : {
+            $geoWithin: {
+                $centerSphere: [
+                    [lng, lat],
+                    radius
+                ]
+            }
+        }
+    })
+
+    console.log(usersLoc)
+
+    res.status(200).json({
+        status: "success",
+        results: usersLoc.length,
+        data: {
+            users: usersLoc
+        }
+    })
+
+})

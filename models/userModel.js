@@ -59,13 +59,15 @@ const userSchema = new mongoose.Schema({
             default: 'Point',
             enum: ['Point']
         },
-        coordinate: [Number],
+        coordinates: [Number],
         address: String,
     },
 }, {
     toJSON: { virtuals: false },
     toObject: { virtuals: true }
 })
+
+userSchema.index({ 'location.coordinate': '2dsphere' })
 
 //virtual property are not saved in db, they are derived from other data in db
 userSchema.virtual('age').get(function () {

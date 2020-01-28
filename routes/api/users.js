@@ -24,4 +24,7 @@ router.patch('/update-user/:id', userController.updateUser)
 router.delete('/delete-user/:id', userController.deleteUser)
 router.get('/get-user/:id', userController.getUser)
 
+//user-within/233/center/-40,45/unit/km
+router.get('/user-within/:distance/center/:latlng/unit/:unit', userController.getUsersWithin)
+
 module.exports = router
