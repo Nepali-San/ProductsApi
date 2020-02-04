@@ -3,6 +3,7 @@ const path = require('path')
 const usersRouter = require('./routes/api/users')
 const productsRouter = require('./routes/api/products')
 const reviewsRouter = require('./routes/api/reviews')
+const viewRouter = require('./routes/viewRoutes')
 const morgan = require('morgan')    //for logging the requests on console
 const ApiError = require('./utils/apiError')
 const globalErrorHandler = require('./controllers/errorController')
@@ -40,12 +41,7 @@ app.use('/api', limiter)
 app.use(mongoSanitize())
 app.use(xss())
 
-app.get('/', (req, res, next) => {
-    res.status(200).render('base', {
-        title: 'SToC',        
-    })
-})
-
+app.use('/', viewRouter)
 app.use('/api/v1/users', usersRouter)
 app.use('/api/v1/products', productsRouter)
 app.use('/api/v1/reviews', reviewsRouter)

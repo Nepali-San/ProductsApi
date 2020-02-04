@@ -4,7 +4,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible" content="ie=edge")
-        title #{title}
+        title SToC | #{title}
         link(rel = 'stylesheet' href='css/style.css')
     body
 
@@ -12,8 +12,9 @@ html(lang="en")
         include _header
 
         //  Content 
-        section
-            h1 Products
+        block content
+            h1 This is a placeholder heading
+            //- used when there is no content i.e. only base template
 
         //  Footer 
         include _footer
