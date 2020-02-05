@@ -25,6 +25,11 @@ header nav button {
   font-size: 20px;
 }
 
+.section-content {
+  width: 92%;
+  margin: auto;
+}
+
 footer {
   display: flex;
   justify-content: space-between;
