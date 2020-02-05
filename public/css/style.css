@@ -59,3 +59,12 @@ footer ul li a {
   margin-right: 12px;
   margin-top: 5px;
 }
+
+/* Product overview page */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-evenly;
+  margin: 10px;
+}

@@ -1,5 +1,12 @@
-extends base
+extends layout/base
 
-block content
-    .section-content    
-        h1 This is Product overview page
+block content  
+    .card-container
+        each product in products
+            .card
+                img(src='images/user.png' width="300px" height="250px" alt=`${product.title}`)
+                p=product.title
+                p=product.description
+                p=product.price
+                p=product.ratingAverage+' ('+product.ratingQuantity+')'                   
+                a(href=`/product/${product.slug}`) Details
