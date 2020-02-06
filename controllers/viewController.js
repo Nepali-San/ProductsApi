@@ -18,6 +18,5 @@ exports.getProduct = catchAsync(async (req, res) => {
     res.status(200).render('product', {
         title: "Product",
         product
-
     })
 })

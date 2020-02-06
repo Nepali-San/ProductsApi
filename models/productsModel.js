@@ -5,6 +5,7 @@ const productSchema = mongoose.Schema({
     title: {
         type: String,
         trim: true,
+        unique: true,
         required: [true, "products must hava a title/name"],
         maxlength: [35, 'product title must be less than or equal to 35 characters'],
         minlength: [4, 'product title must be more than or equal to 4 characters'],
@@ -91,7 +92,7 @@ productSchema.pre('save', function (next) {
     //`this` is the current document before saving into db
     //add `slug` to our document
     // this.created_by = 'id'
-    this.slug = slugify(this.title + this._id, { lower: true })
+    this.slug = slugify(this.title, { lower: true })
     next()
 })
 
