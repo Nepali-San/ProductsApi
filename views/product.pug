@@ -2,4 +2,17 @@ extends layout/base
 
 block content
     .section-content    
-        h1 this is a product page
+        h1=product.title
+        img(src=`../images/imagePlaceholder.png` alt=`${product.title}`)
+        h2 other details
+        p=`price: ${product.price}`
+        p=`description: ${product.description}`
+        p=`owner : ${product.created_by.name}`
+        p=`location: ${product.created_by.location.address}`
+        p=`average rating:  ${product.ratingAverage} (${product.ratingQuantity})`
+        h2 Ratings
+
+        each review in product.review
+            p=`Review : ${review.review}`
+            p=`Rating: ${review.rating}`
+            p=`Reviewed by : ${review.user.name}`

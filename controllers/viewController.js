@@ -12,9 +12,10 @@ exports.getOverview = catchAsync(async (req, res) => {
 
 exports.getProduct = catchAsync(async (req, res) => {
     const product = await Product.findOne({ slug: req.params.slug }).populate({
-        path: 'reviews',
+        path: 'review',
         field: 'review rating user'
     })
+    // res.json(product)
     res.status(200).render('product', {
         title: "Product",
         product
